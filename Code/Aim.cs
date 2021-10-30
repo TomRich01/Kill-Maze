@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Aim : MonoBehaviour
 {
-    public GameObject knife;
+    public GameObject knifeDisplay;
     public Animator anim;
+    public GameObject spawner;
+    public GameObject knifeOBJ;
+    public int countdown = 3;
+    public int knifeCount;
+
+    private Rigidbody rigidbodyKnife;
 
    
     // Start is called before the first frame update
@@ -17,43 +23,52 @@ public class Aim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        knifeCount = FindObjectsOfType<Thrown>().Length;
         if (Input.GetMouseButton(1))
         {
             anim.SetBool("Aiming", true);
-            anim.SetBool("Throw", false);
+            knifeDisplay.SetActive(true);
 
             if (Input.GetMouseButton(0))
             {
-                anim.SetBool("Throw", true);
-              //  RaycastHit checkCover;
-               // int range = 5;
-                // create the ray to use
-                // Ray ray = new Ray(transform.position, GameObject.FindGameObjectWithTag("Enemy").transform.position - transform.position);
-                //casting a ray against the player
-               /* if (Physics.Raycast(ray, out checkCover, range))
-                {
-                    //we are here if the ray hit a collider
-                    //now to check if that collider is the player
-                    if (checkCover.collider.gameObject.CompareTag("Enemy"))
-                    {
-                        checkCover.collider.gameObject.GetComponent<Enemy_Move>().State = Enemy_Move.CURRENT_STATE.Dead;
-                       // GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy_Move>().State = Enemy_Move.CURRENT_STATE.Dead;
-                    }
-                } */
 
+                if (knifeCount == 0)
+                {
+
+                    knifeDisplay.SetActive(false);
+                    SpawnKnife();
+                }
+                if (knifeCount >= 1)
+                {
+                    knifeDisplay.SetActive(false);
+                }
+                    
+ 
             }
         }
        
         if (!Input.GetMouseButton(1))
         {
+            
             anim.SetBool("Aiming", false);
-            anim.SetBool("Throw", false);
+            knifeDisplay.SetActive(true);
+
         }
     }
-    void FixedUpdate()
+    
+   void SpawnKnife()
     {
+        for (int i = 0; i < 1; i++)
+        {
+            Instantiate(knifeOBJ, spawner.transform.position, transform.rotation);
+        }
        
+        
+        
     }
+
+   
 
   
 }
